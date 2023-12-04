@@ -1,0 +1,9 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+.vidClass{
+    background-color: yellow;
+    min-width:500px;
+    min-height: 500px;
+}

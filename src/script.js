@@ -1,9 +1,3 @@
-// const { JSDOM } = require('jsdom');
-// import QrScanner from 'path/to/qr-scanner.min.js'; // if using plain es6 import
-// import QrScanner from 'qr-scanner'; // if installed via package and bundling with a module bundler like webpack or rollup
-// const jsdom = new JSDOM('<!DOCTYPE html><html><body><div id="vidId"></div></body></html>');
-// const window = jsdom.window;
-// const document = window.document;
 
 window.onload = () => {
     const videoElem = document.getElementById('vidId');
@@ -12,16 +6,29 @@ window.onload = () => {
         const qrScanner = new QrScanner(videoElem, result => {
             // This callback function is called when a QR code is successfully scanned
             console.log('QR code scanned:', result);
-            returnDetailedScanResult: true
+            if(result?.data){
+                let a=JSON.stringify(result.data);
+                let index=a.indexOf('&');
+                let upiId=a.slice(14,index);
+                let userName=a.slice(index+4,a.lastIndexOf('&'));
+                console.log(upiId);
+                console.log(userName)
+                qrScanner.stop();
+            }
             // You can handle the scanned QR code result as needed
+        }, {
+            // returnDetailedScanResult: true,
+            onDecodeError:  (error) => {
+                console.error('QR code scan error:', error);
+                // Handle the error as needed
+            },
+            prefferdCamera: 'User',
+            highlightScanRegion: true,
+            maxScansPerSecond:3
+            // calculateScanRegion: 20
         });
 
-        // Start the camera
-        qrScanner.start();
+        console.log(qrScanner.start());
+
     }
 };
-// window.addEventListener("load", (event) => {
-//     console.log("Loading Done........");
-//     const videoElem = document.getElementById('vidId');
-//     console.log(videoElem.textContent); 
-//  });
